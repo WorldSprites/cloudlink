@@ -11,19 +11,19 @@ class example_callbacks:
         print("Test1!")
         await asyncio.sleep(1)
         print("Test1 after one second!")
-    
+
     async def test2(self, client, message):
         print("Test2!")
         await asyncio.sleep(1)
         print("Test2 after one second!")
-    
+
     async def test3(self, client, message):
         print("Test3!")
 
 
 class example_commands:
     def __init__(self, parent, protocol):
-        
+
         # Creating custom commands - This example adds a custom command called "foobar".
         @server.on_command(cmd="foobar", schema=protocol.schema)
         async def foobar(client, message):
@@ -48,13 +48,13 @@ class example_events:
         print("Client", client.id, "disconnected.")
 
     async def on_connect(self, client):
-        print("Client", client.id, "connected.") 
+        print("Client", client.id, "connected.")
 
 
 if __name__ == "__main__":
     # Initialize the server
     server = server()
-    
+
     # Configure logging settings
     server.logging.basicConfig(
         level=server.logging.DEBUG
@@ -81,12 +81,12 @@ if __name__ == "__main__":
     server.bind_event(server.on_connect, events.on_connect)
     server.bind_event(server.on_disconnect, events.on_close)
 
-    # You can also bind an event to a custom command. We'll bind callbacks.test3 to our 
+    # You can also bind an event to a custom command. We'll bind callbacks.test3 to our
     # foobar command from earlier.
     server.bind_callback(cmd="foobar", schema=clpv4.schema, method=callbacks.test3)
 
     # Initialize SSL support
     # server.enable_ssl(certfile="cert.pem", keyfile="privkey.pem")
-    
+
     # Start the server
-    server.run(ip="127.0.0.1", port=3000)
+    server.run(ip="0.0.0.0", port=3000)
