@@ -1,25 +1,5 @@
 from cloudlink import server
 from cloudlink.server.protocols import clpv4, scratch
-import asyncio
-
-
-class example_callbacks:
-    def __init__(self, parent):
-        self.parent = parent
-
-    async def test1(self, client, message):
-        print("Test1!")
-        await asyncio.sleep(1)
-        print("Test1 after one second!")
-
-    async def test2(self, client, message):
-        print("Test2!")
-        await asyncio.sleep(1)
-        print("Test2 after one second!")
-
-    async def test3(self, client, message):
-        print("Test3!")
-
 
 class example_commands:
     def __init__(self, parent, protocol):
@@ -65,25 +45,14 @@ if __name__ == "__main__":
     scratch = scratch(server)
 
     # Load examples
-    callbacks = example_callbacks(server)
     commands = example_commands(server, clpv4)
     events = example_events()
-
-    # Binding callbacks - This example binds the "handshake" command with example callbacks.
-    # You can bind as many functions as you want to a callback, but they must use async.
-    # To bind callbacks to built-in methods (example: gmsg), see cloudlink.cl_methods.
-    server.bind_callback(cmd="handshake", schema=clpv4.schema, method=callbacks.test1)
-    server.bind_callback(cmd="handshake", schema=clpv4.schema, method=callbacks.test2)
 
     # Binding events - This example will print a client connect/disconnect message.
     # You can bind as many functions as you want to an event, but they must use async.
     # To see all possible events for the server, see cloudlink.events.
     server.bind_event(server.on_connect, events.on_connect)
     server.bind_event(server.on_disconnect, events.on_close)
-
-    # You can also bind an event to a custom command. We'll bind callbacks.test3 to our
-    # foobar command from earlier.
-    server.bind_callback(cmd="foobar", schema=clpv4.schema, method=callbacks.test3)
 
     # Initialize SSL support
     # server.enable_ssl(certfile="cert.pem", keyfile="privkey.pem")
