@@ -1,5 +1,5 @@
 from cloudlink import server
-from cloudlink.server.protocols import clpv4, scratch
+from cloudlink.server.protocols import clpv4
 
 if __name__ == "__main__":
     # Initialize the server
@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     # Configure logging settings
     server.logging.basicConfig(
-        level=server.logging.DEBUG
+        level=server.logging.ERROR
     )
 
     # Load protocols
