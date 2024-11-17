@@ -2,7 +2,6 @@ package cloudlink
 
 import (
 	"log"
-	"strconv"
 )
 
 type UserObject struct {
@@ -92,16 +91,16 @@ func (room *Room) BroadcastGvar(name interface{}, value interface{}) {
 }
 
 func (client *Client) RequireIDBeingSet(message *PacketUPL) bool {
-	usernameunset := (client.TempCopy().username == nil)
-	if usernameunset {
-		UnicastMessage(client, &PacketUPL{
-			Cmd:      "statuscode",
-			Code:     "E:111 | ID required",
-			CodeID:   111,
-			Listener: message.Listener,
-		})
-	}
-	return usernameunset
+	//	usernameunset := (client.TempCopy().username == nil)
+	//	if usernameunset {
+	//		UnicastMessage(client, &PacketUPL{
+	//			Cmd:      "statuscode",
+	//			Code:     "E:111 | ID required",
+	//			CodeID:   111,
+	//			Listener: message.Listener,
+	//		})
+	//	}
+	return true
 }
 
 func (client *Client) HandleIDSet(message *PacketUPL) bool {
@@ -351,12 +350,10 @@ func CL4MethodHandler(client *Client, message *PacketUPL) {
 		}
 
 	case "link":
-		log.Printf("linking to room")
 		// Require username to be set before usage
 		if !client.RequireIDBeingSet(message) {
 			return
 		}
-		log.Printf(strconv.FormatBool(!client.RequireIDBeingSet(message)))
 		// Detect if single or multiple rooms
 		switch message.Val.(type) {
 
