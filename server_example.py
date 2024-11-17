@@ -7,19 +7,6 @@ class example_callbacks:
     def __init__(self, parent):
         self.parent = parent
 
-    async def test1(self, client, message):
-        print("Test1!")
-        await asyncio.sleep(1)
-        print("Test1 after one second!")
-
-    async def test2(self, client, message):
-        print("Test2!")
-        await asyncio.sleep(1)
-        print("Test2 after one second!")
-
-    async def test3(self, client, message):
-        print("Test3!")
-
 
 class example_commands:
     def __init__(self, parent, protocol):
@@ -27,7 +14,6 @@ class example_commands:
         # Creating custom commands - This example adds a custom command called "foobar".
         @server.on_command(cmd="foobar", schema=protocol.schema)
         async def foobar(client, message):
-            print("Foobar!")
 
             # Reading the IP address of the client is as easy as calling get_client_ip from the clpv4 protocol object.
             print(protocol.get_client_ip(client))
@@ -57,7 +43,7 @@ if __name__ == "__main__":
 
     # Configure logging settings
     server.logging.basicConfig(
-        level=server.logging.DEBUG
+        level=server.logging.CRITICAL
     )
 
     # Load protocols
