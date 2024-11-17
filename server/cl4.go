@@ -2,6 +2,7 @@ package cloudlink
 
 import (
 	"log"
+	"strconv"
 )
 
 type UserObject struct {
@@ -353,10 +354,9 @@ func CL4MethodHandler(client *Client, message *PacketUPL) {
 		log.Printf("linking to room")
 		// Require username to be set before usage
 		if !client.RequireIDBeingSet(message) {
-			log.Printf("no username")
 			return
 		}
-
+		log.Printf(strconv.FormatBool(!client.RequireIDBeingSet(message)))
 		// Detect if single or multiple rooms
 		switch message.Val.(type) {
 
