@@ -350,8 +350,10 @@ func CL4MethodHandler(client *Client, message *PacketUPL) {
 		}
 
 	case "link":
+		log.Printf("linking to room")
 		// Require username to be set before usage
 		if !client.RequireIDBeingSet(message) {
+			log.Printf("no username")
 			return
 		}
 
