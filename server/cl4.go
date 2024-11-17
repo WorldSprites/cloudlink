@@ -345,14 +345,14 @@ func CL4MethodHandler(client *Client, message *PacketUPL) {
 
 	case "pvar":
 		// Require username to be set before usage
-		if !client.RequireIDBeingSet(message) {
+		if client.RequireIDBeingSet(message) {
 			return
 		}
 
 	case "link":
 		log.Printf("linking to room")
 		// Require username to be set before usage
-		if !client.RequireIDBeingSet(message) {
+		if client.RequireIDBeingSet(message) {
 			return
 		}
 		// Detect if single or multiple rooms
@@ -435,7 +435,7 @@ func CL4MethodHandler(client *Client, message *PacketUPL) {
 
 	case "unlink":
 		// Require username to be set before usage
-		if !client.RequireIDBeingSet(message) {
+		if client.RequireIDBeingSet(message) {
 			return
 		}
 		// Detect if single or multiple rooms
@@ -538,7 +538,7 @@ func CL4MethodHandler(client *Client, message *PacketUPL) {
 
 	case "direct":
 		// Require username to be set before usage
-		if !client.RequireIDBeingSet(message) {
+		if client.RequireIDBeingSet(message) {
 			return
 		}
 
