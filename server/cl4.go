@@ -100,7 +100,7 @@ func (client *Client) RequireIDBeingSet(message *PacketUPL) bool {
 	//			Listener: message.Listener,
 	//		})
 	//	}
-	return true
+	return false
 }
 
 func (client *Client) HandleIDSet(message *PacketUPL) bool {
