@@ -5,11 +5,6 @@ if __name__ == "__main__":
     # Initialize the server
     server = server()
 
-    # Configure logging settings
-    server.logging.basicConfig(
-        level=server.logging.ERROR
-    )
-
     # Load protocols
     clpv4 = clpv4(server)
 
