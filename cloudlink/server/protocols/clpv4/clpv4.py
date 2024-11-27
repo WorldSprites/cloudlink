@@ -282,31 +282,28 @@ class clpv4:
             )
 
         # Protocol identified event
+        @server.on_protocol_identified(schema=cl4_protocol)
+        async def protocol_identified(client):
+            server.logger.debug(f"Adding client {client.snowflake} to default room.")
+            server.rooms_manager.subscribe(client, "default")
+
         @server.on_protocol_disconnect(schema=cl4_protocol)
         async def protocol_disconnect(client):
             server.logger.debug(f"Removing client {client.snowflake} from rooms...")
 
-            # Unsubscribe the client from all rooms
+            # Unsubscribe from all rooms
             async for room_id in server.async_iterable(server.copy(client.rooms)):
                 server.rooms_manager.unsubscribe(client, room_id)
 
-                # Fetch remaining clients in the room
+                # Notify rooms of removed client
                 clients = await server.rooms_manager.get_all_in_rooms(room_id, cl4_protocol)
-                if clients:
-                    # Notify remaining clients of the removed client
-                    clients = server.copy(clients)  # Ensure it's a safe copy
-                    server.send_packet(clients, {
-                        "cmd": "ulist",
-                        "mode": "remove",
-                        "val": self.generate_user_object(client),
-                        "rooms": room_id
-                    })
-                else:
-                    server.logger.warning(f"No remaining clients to notify in room {room_id}.")
-
-            # Log if the client wasn't in any rooms
-            if not client.rooms:
-                server.logger.info(f"Client {client.snowflake} wasn't in any rooms.")
+                clients = server.copy(clients)
+                server.send_packet(clients, {
+                    "cmd": "ulist",
+                    "mode": "remove",
+                    "val": generate_user_object(client),
+                    "rooms": room_id
+                })
 
         # The CLPv4 command set
 
