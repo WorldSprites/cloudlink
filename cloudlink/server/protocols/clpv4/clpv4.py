@@ -95,9 +95,9 @@ class clpv4:
 
         # valid(message, schema): Used to verify messages.
         def valid(client, message, schema, allow_unknown=True):
-        
+
             validator = server.validator(schema, allow_unknown=allow_unknown)
-            
+
             if validator.validate(message):
                 return True
 
@@ -293,11 +293,6 @@ class clpv4:
 
             # Unsubscribe from all rooms
             async for room_id in server.async_iterable(server.copy(client.rooms)):
-                server.rooms_manager.unsubscribe(client, room_id)
-
-                # Don't bother with notifying if client username wasn't set
-                if not client.username_set:
-                    continue
 
                 # Notify rooms of removed client
                 clients = await server.rooms_manager.get_all_in_rooms(room_id, cl4_protocol)
@@ -308,6 +303,7 @@ class clpv4:
                     "val": generate_user_object(client),
                     "rooms": room_id
                 })
+                server.rooms_manager.unsubscribe(client, room_id)
 
         # The CLPv4 command set
 
@@ -653,11 +649,11 @@ class clpv4:
                     message["val"] = set(message["val"])
                 if type(message["val"]) == str:
                     message["val"] = {message["val"]}
-            
+
             # Unsubscribe from default room if not mentioned
             if not "default" in message["val"]:
                 server.rooms_manager.unsubscribe(client, "default")
-                
+
                 # Broadcast userlist state to existing members
                 clients = await server.rooms_manager.get_all_in_rooms("default", cl4_protocol)
                 clients = server.copy(clients)
