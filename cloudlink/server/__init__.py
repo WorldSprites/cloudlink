@@ -142,7 +142,7 @@ class server:
 
         except KeyboardInterrupt:
             pass
-    
+
     def unbind_command(self, cmd, schema):
         if schema not in self.command_handlers:
             raise ValueError
@@ -150,7 +150,7 @@ class server:
             raise ValueError
         self.logger.debug(f"Unbinding command {cmd} from {schema.__qualname__} command event manager")
         self.command_handlers[schema].pop(cmd)
-    
+
     # Event binder for on_command events
     def on_command(self, cmd, schema):
 
@@ -368,7 +368,7 @@ class server:
 
             # Identify protocol
             errorlist = list()
-            
+
             for schema in self.command_handlers:
                 validator = self.validator(schema.default, allow_unknown=True)
                 if validator.validate(message):
@@ -407,10 +407,10 @@ class server:
 
             # Validate message using known protocol
             selected_protocol = client.protocol
-            
+
             validator = self.validator(selected_protocol.default, allow_unknown=True)
-            
-            
+
+
             if not validator.validate(message):
                 errors = validator.errors
 
@@ -560,10 +560,6 @@ class server:
 
         # Handle unexpected disconnects
         except self.ws.exceptions.ConnectionClosedError:
-            pass
-
-        # Handle OK disconnects
-        except self.ws.exceptions.ConnectionClosedOK:
             pass
 
         # Catch any unexpected exceptions
@@ -716,7 +712,7 @@ class server:
         # Add function to the command handler
         self.logger.debug(f"Binding function {method.__name__} to command {cmd} in {schema.__qualname__} command event manager")
         self.command_handlers[schema][cmd].add(method)
-    
+
     # Deprecated. Provides semi-backwards compatibility for event functions from 0.1.9.2.
     def bind_event(self, event, func):
         match (event):
