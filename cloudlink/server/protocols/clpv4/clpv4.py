@@ -295,6 +295,10 @@ class clpv4:
             async for room_id in server.async_iterable(server.copy(client.rooms)):
                 server.rooms_manager.unsubscribe(client, room_id)
 
+                # Don't bother with notifying if client username wasn't set
+                if not client.username_set:
+                    continue
+
                 # Notify rooms of removed client
                 clients = await server.rooms_manager.get_all_in_rooms(room_id, cl4_protocol)
                 clients = server.copy(clients)
