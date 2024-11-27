@@ -673,7 +673,7 @@ class server:
 
         # Attempt to send the packet
         try:
-            client.send(message)
+            await client.send(message)
             await asyncio.sleep(0.025)
         except Exception as e:
             ""
